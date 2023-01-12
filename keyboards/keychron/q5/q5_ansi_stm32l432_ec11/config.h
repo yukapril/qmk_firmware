@@ -32,3 +32,5 @@
 
 /* Enable num-lock LED */
 #define NUM_LOCK_LED_INDEX 31
+
+#define DYNAMIC_KEYMAP_LAYER_COUNT 6

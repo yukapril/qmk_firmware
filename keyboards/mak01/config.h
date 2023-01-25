@@ -17,7 +17,7 @@
 #define ENCODERS_PAD_B { D6 } // 编码器引脚B定义，必须写在键盘config.h中
 #define ENCODER_RESOLUTION 4 // 编码器在每个棘爪之间脉冲个数
 
-#define DYNAMIC_KEYMAP_LAYER_COUNT 4 // VIA软件中 可设置的键层数量（默认4），必须写在键盘config.h中
+#define DYNAMIC_KEYMAP_LAYER_COUNT 3 // VIA软件中 可设置的键层数量（默认4），必须写在键盘config.h中
 
 // 强制开启全键无冲
 #define FORCE_NKRO

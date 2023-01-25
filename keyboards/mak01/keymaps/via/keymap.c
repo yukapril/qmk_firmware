@@ -3,32 +3,32 @@
 // Layers
 enum layers {
   BASE,
-  FN,
-  FN2
+  LED,
+  FN
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     [BASE] = LAYOUT(
-        KC_MUTE, TO(0), KC_Y, KC_Z,
-        TO(1),   TO(2), KC_C, KC_D,
-        KC_E,    KC_F,  KC_G, KC_H,
-        KC_I,    KC_J,  KC_K, KC_L,
-        KC_M,    KC_N,  KC_O, KC_P,
-        KC_Q,    KC_R,  KC_S, KC_T),
+        KC_MUTE, TO(0),   _______, _______,
+        TO(1),   TO(2),   _______, _______,
+        KC_7,    KC_8,    KC_9,    KC_DEL,
+        KC_4,    KC_5,    KC_6,    KC_BSPC,
+        KC_1,    KC_2,    KC_3,    KC_ENT,
+        LCTL(KC_C), LCTL(KC_V), LCTL(KC_X), LCTL(KC_A)),
+    [LED] = LAYOUT(
+        RGB_TOG, TO(0),   _______, _______,
+        TO(1),   TO(2),   _______, _______,
+        RGB_HUI, RGB_SAI, RGB_SPI, RGB_VAI,
+        RGB_HUD, RGB_SAD, RGB_SPD, RGB_VAD,
+        _______, _______, _______, _______,
+        _______, _______, _______, _______),
     [FN] = LAYOUT(
-        RGB_TOG, TO(0),   KC_TRNS, KC_TRNS,
-        TO(1),   TO(2),   KC_TRNS, KC_TRNS,
-        RGB_HUI, RGB_SPI, KC_TRNS, KC_TRNS,
-        RGB_HUD, RGB_SPD, KC_TRNS, KC_TRNS,
-        RGB_VAI, RGB_SAI, KC_TRNS, KC_TRNS,
-        RGB_VAD, RGB_SAD, KC_TRNS, KC_TRNS),
-    [FN2] = LAYOUT(
-        KC_TRNS, TO(0),   KC_TRNS, KC_TRNS,
-        TO(1),   TO(2),   KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS,
-        KC_TRNS, KC_TRNS, KC_TRNS, KC_TRNS)
+        _______, TO(0),   _______, _______,
+        TO(1),   TO(2),   _______, _______,
+        _______, _______, _______, _______,
+        _______, _______, _______, _______,
+        _______, _______, _______, _______,
+        _______, _______, _______, _______)
 };
 
 
@@ -77,22 +77,22 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 #ifdef OLED_ENABLE
     bool oled_task_user(void) {
         // Line 1
-        oled_write_P(PSTR("Layer: "), false);
+        oled_write_P(PSTR("LAYER:"), false);
         switch (get_highest_layer(layer_state)) {
             case BASE:
-                oled_write_P(PSTR("0"), false);
+                oled_write_P(PSTR("BASE"), false);
+                break;
+            case LED:
+                oled_write_P(PSTR("LED "), false);
                 break;
             case FN:
-                oled_write_P(PSTR("1"), false);
-                break;
-            case FN2:
-                oled_write_P(PSTR("2"), false);
+                oled_write_P(PSTR("FUNC"), false);
                 break;
             default:
-                oled_write_P(PSTR("X"), false);
+                oled_write_P(PSTR("XXXX"), false);
         }
 
-        oled_write_P(PSTR(" LED: "), false);
+        oled_write_P(PSTR(" STAT: "), false);
         led_t led_state = host_keyboard_led_state();
         oled_write_P(led_state.num_lock ? PSTR("N") : PSTR(" "), false);
         oled_write_P(led_state.caps_lock ? PSTR("C") : PSTR(" "), false);
@@ -105,26 +105,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         // Line 3-8
         switch (get_highest_layer(layer_state)) {
             case BASE:
-                oled_write_P(PSTR("detail BASE\n"), false);
+                oled_write_P(PSTR(" 7    8    9   DEL\n"), false);
+                oled_write_P(PSTR(" 4    5    6   BSPC\n"), false);
+                oled_write_P(PSTR(" 1    2    3   ENT\n"), false);
+                oled_write_P(PSTR("COPY PAST CUT  SALL\n"), false);
                 oled_write_P(PSTR("\n"), false);
+                oled_write_P(PSTR("\n"), false);
+                break;
+            case LED:
+                oled_write_P(PSTR("HUE+ SAT+ SPD+ BRT+\n"), false);
+                oled_write_P(PSTR("HUE- SAT- SPD- BRT-\n"), false);
                 oled_write_P(PSTR("\n"), false);
                 oled_write_P(PSTR("\n"), false);
                 oled_write_P(PSTR("\n"), false);
                 oled_write_P(PSTR("\n"), false);
                 break;
             case FN:
-                oled_write_P(PSTR("HUI SPI ___ ___\n"), false);
-                oled_write_P(PSTR("HUD SPD ___ ___\n"), false);
-                oled_write_P(PSTR("VAI SAI ___ ___\n"), false);
-                oled_write_P(PSTR("VAD SAD ___ ___\n"), false);
-                oled_write_P(PSTR("\n"), false);
-                oled_write_P(PSTR("\n"), false);
-                break;
-            case FN2:
-                oled_write_P(PSTR("detail FN2\n"), false);
-                oled_write_P(PSTR("\n"), false);
-                oled_write_P(PSTR("\n"), false);
-                oled_write_P(PSTR("\n"), false);
+                oled_write_P(PSTR("M1   M2   M3   M4\n"), false);
+                oled_write_P(PSTR("M5   M6   M7   M8\n"), false);
+                oled_write_P(PSTR("M9   M10  M11  M12\n"), false);
+                oled_write_P(PSTR("M0   M13  M14  M15\n"), false);
                 oled_write_P(PSTR("\n"), false);
                 oled_write_P(PSTR("\n"), false);
                 break;
@@ -152,7 +152,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                     tap_code(KC_VOLD);
                 }
             }
-        }else if (IS_LAYER_ON(FN)) {
+        }else if (IS_LAYER_ON(LED)) {
             if (index == 0) {
                 if (clockwise) {
                     // 灯光控制，必须用函数控制，不能用tap_code
